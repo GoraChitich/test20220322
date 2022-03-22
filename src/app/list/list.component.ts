@@ -10,35 +10,40 @@ import Person from '../person';
 })
 export class ListComponent implements OnInit {
   persons: Person[]=[];
-  constructor(@Inject(DOCUMENT) document: Document, private gettingElementsService: GettingElementsService) { }
+  constructor(@Inject(DOCUMENT) document: Document, public gettingElementsService: GettingElementsService) { }
   interval: any;
+  currentPerson: Person|undefined;
   ngOnInit(): void {
   }
-  
+
   updateElements(){
     console.log("persons: ", this.persons);
     this.persons.forEach((val, index) => {
       let text = document.getElementById('idtext'+index);
-      console.log(text);
+      let box = document.getElementById('idbox'+index);
       text?.setAttribute("value", val.name);
       text?.setAttribute('position', ''+(-3.5+index*(1.5-index/10))+' '+(1.5-index/100)+' -3');
-      let box = document.getElementById('idbox'+index);
       box?.setAttribute("src", val.img);
       box?.setAttribute('position', ''+(-3+index*(1.5-index/10))+' '+(0.5+index*0.1)+' -3');
-  
-      text?.setAttribute('scale',''+(1-index/10)+' '+(1-index/10)+' '+(1-index/10))
-      box?.setAttribute('scale',''+(1-index/10)+' '+(1-index/10)+' '+(1-index/10))
+
+      text?.setAttribute('scale',''+(1-index/10)+' '+(1-index/10)+' '+(1-index/10));
+      box?.setAttribute('scale',''+(1-index/10)+' '+(1-index/10)+' '+(1-index/10));
+
+      text?.addEventListener('click', ()=>{console.log("sdfsdf")});
+
+      box?.addEventListener('click', ()=>{console.log("sdfsdf")});
+
       clearInterval(this.interval);
     })
   }
-  
+
   ngAfterViewInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
     // console.log("ngAfterViewInit");
-    
+
     this.gettingElementsService.getList().subscribe(result =>{
-      this.persons = result; 
+      this.persons = result;
       // this.updateElements();
     },
       err => {console.error(err)}
@@ -52,7 +57,15 @@ export class ListComponent implements OnInit {
         }
       }, 1000);
   }
-  
+
+  openDetails(item: Person){
+    this.gettingElementsService.currentPerson = item;
+  }
+
+  testFunction($event:any){
+    console.log("work");
+  }
+
 
 
 }

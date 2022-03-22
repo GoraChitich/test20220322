@@ -1,6 +1,7 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { GettingElementsService } from '../getting-elements.service';
 import Person from '../person';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { GettingElementsService } from '../getting-elements.service';
 
 @Component({
   selector: 'app-element',
@@ -8,27 +9,40 @@ import Person from '../person';
   styleUrls: ['./element.component.css']
 })
 export class ElementComponent implements OnInit {
-  
-  @ViewChild ('txt') atext!: ElementRef;
-  @ViewChild ('box') abox!: ElementRef;
-  @Input() NElement: number=0;
+  closeResult = '';
+
+  @ViewChild ('content') content!: ElementRef;
   @Input() person!: Person;
-  constructor() {
+
+  constructor(private modalService: NgbModal, private gettingElementsService: GettingElementsService) {
    }
 
   ngOnInit(): void {
-   
   }
   ngAfterViewInit(): void {
-      console.log(this.person.name);
-    
-    this.atext.nativeElement.setAttribute("value", this.person.name);
-    this.abox.nativeElement.setAttribute("src", this.person.img);
-    
+    this.open();
+    console.log('ngOnInit');
+
+
+  }
+  open() {
+    this.modalService.open(this.content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+      this.gettingElementsService.currentPerson=undefined;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      this.gettingElementsService.currentPerson=undefined;
+    });
   }
 
-  onClick(){
-    console.log("click")
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 
 }

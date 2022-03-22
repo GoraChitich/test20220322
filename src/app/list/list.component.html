@@ -1,13 +1,14 @@
 <p>list works!</p>
-<div style="display: flex; align-items: center;" *ngIf="persons.length">
-    <h1>{{persons.length}}</h1>
-    <a-scene antialias="true" embedded  [style.height]="'800px'" >
-    <ng-container  *ngFor="let item of persons; let i=index" >
-        
-        <a-text [id]="'idtext'+i"   color="#000" font = "https://cdn.aframe.io/fonts/SourceCodePro.fnt"  width="3"   #txt></a-text>
+<div  *ngIf="persons.length">
+    <a-scene antialias="true" embedded  [style.height]="'400px'" cursor="rayOrigin: mouse" >
+      <ng-container  *ngFor="let item of persons; let i=index">
 
-        <a-box  [id]="'idbox'+i"  rotation="0 45 0" #box ></a-box>
 
-    </ng-container>
+            <a-text [id]="'idtext'+i"   color="#000" font = "https://cdn.aframe.io/fonts/SourceCodePro.fnt"  width="3" (click)="openDetails(item)"></a-text>
+
+            <a-box  [id]="'idbox'+i"  rotation="0 45 0"  (click)="openDetails(item)"></a-box>
+      </ng-container>
     </a-scene>
 </div>
+
+<app-element *ngIf="this.gettingElementsService.currentPerson" [person]="this.gettingElementsService.currentPerson"></app-element>

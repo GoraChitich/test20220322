@@ -7,12 +7,12 @@ import Person from './person';
   providedIn: 'root'
 })
 export class GettingElementsService {
-
+  currentPerson: Person| undefined;
   constructor(private http: HttpClient) { }
 
   getList(): Observable<Person[]>{
-    return this.http.get<Person[]>('https://www.breakingbadapi.com/api/characters?limit=5&offset=10');
+    return this.http.get<Person[]>('https://www.breakingbadapi.com/api/characters?limit=8&offset=33');
   }
-  
+
 
 }
