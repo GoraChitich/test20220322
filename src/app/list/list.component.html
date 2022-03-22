@@ -1,0 +1,13 @@
+<p>list works!</p>
+<div style="display: flex; align-items: center;">
+    
+    <a-scene antialias="true" embedded  [style.height]="'800px'" >
+    <ng-container  *ngFor="let item of persons; let i=index" >
+        
+        <a-text [id]="'idtext'+i"   color="#000" font = "https://cdn.aframe.io/fonts/SourceCodePro.fnt"  width="3"   #txt></a-text>
+
+        <a-box  [id]="'idbox'+i"  rotation="0 45 0" #box ></a-box>
+
+    </ng-container>
+    </a-scene>
+</div>
