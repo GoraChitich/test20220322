@@ -1,6 +1,6 @@
 <p>list works!</p>
-<div style="display: flex; align-items: center;">
-    
+<div style="display: flex; align-items: center;" *ngIf="persons.length">
+    <h1>{{persons.length}}</h1>
     <a-scene antialias="true" embedded  [style.height]="'800px'" >
     <ng-container  *ngFor="let item of persons; let i=index" >
         

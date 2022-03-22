@@ -11,7 +11,7 @@ export class GettingElementsService {
   constructor(private http: HttpClient) { }
 
   getList(): Observable<Person[]>{
-    return this.http.get<Person[]>('http://localhost:8080/assets/users.json');
+    return this.http.get<Person[]>('https://www.breakingbadapi.com/api/characters?limit=5&offset=10');
   }
   
 
