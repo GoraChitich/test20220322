@@ -10,11 +10,12 @@ import { GettingElementsService } from '../getting-elements.service';
 })
 export class ElementComponent implements OnInit {
   closeResult = '';
+  person: Person|undefined;
 
   @ViewChild ('content') content!: ElementRef;
-  @Input() person!: Person;
 
   constructor(private modalService: NgbModal, private gettingElementsService: GettingElementsService) {
+    this.person  = this.gettingElementsService.currentPerson;
    }
 
   ngOnInit(): void {
