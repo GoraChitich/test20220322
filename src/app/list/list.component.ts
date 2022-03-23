@@ -9,63 +9,51 @@ import Person from '../person';
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {
-  persons: Person[]=[];
   constructor(@Inject(DOCUMENT) document: Document, public gettingElementsService: GettingElementsService) { }
-  interval: any;
   currentPerson: Person|undefined;
   ngOnInit(): void {
   }
 
   updateElements(){
-    console.log("persons: ", this.persons);
-    this.persons.forEach((val, index) => {
-      let text = document.getElementById('idtext'+index);
-      let box = document.getElementById('idbox'+index);
-      text?.setAttribute("value", val.name);
-      text?.setAttribute('position', ''+(-3.5+index*(1.5-index/10))+' '+(1.5-index/100)+' -3');
-      box?.setAttribute("src", val.img);
-      box?.setAttribute('position', ''+(-3+index*(1.5-index/10))+' '+(0.5+index*0.1)+' -3');
-
-      text?.setAttribute('scale',''+(1-index/10)+' '+(1-index/10)+' '+(1-index/10));
-      box?.setAttribute('scale',''+(1-index/10)+' '+(1-index/10)+' '+(1-index/10));
-
-      text?.addEventListener('click', ()=>{console.log("sdfsdf")});
-
-      box?.addEventListener('click', ()=>{console.log("sdfsdf")});
-
-      clearInterval(this.interval);
+    this.gettingElementsService.filteredPersons.forEach((val, index) => {
+      if(index<10){
+        let text = document.getElementById('idtext'+index);
+        let box = document.getElementById('idbox'+index);
+  
+        text?.setAttribute("value", val.name);
+        let postext = ''+(5-(40/(index+4)))+' '+(1.5+index*0.1)+' -3';
+        let posbox = ''+(5-(40/(index+4)))+' '+(0.5+index*0.1)+' -3';
+        let scale = ''+(0.2+(1/(index+1)))+' '+(0.2+(1/(index+1)))+' '+(0.2+(1/(index+1)));
+        text?.setAttribute('position', postext);
+        text?.setAttribute('scale',scale);
+  
+        box?.setAttribute("src", val.img);
+        box?.setAttribute('position', posbox);
+        box?.setAttribute('scale',scale);
+      }
     })
   }
 
   ngAfterViewInit(): void {
-    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-    //Add 'implements AfterViewInit' to the class.
-    // console.log("ngAfterViewInit");
 
-    this.gettingElementsService.getList().subscribe(result =>{
-      this.persons = result;
-      // this.updateElements();
+      this.gettingElementsService.getList().subscribe(result =>{
+      this.gettingElementsService.persons = result;
+      this.gettingElementsService.filteredPersons = this.gettingElementsService.persons;
+      this.gettingElementsService.mustUpdate = true;
     },
       err => {console.error(err)}
       );
 
-      this.interval = setInterval(() =>{
-        console.log("Check interval");
-        if(this.persons.length){
-          console.log("We have some persons");
-          this.updateElements();
-        }
-      }, 1000);
+      setInterval(() =>{
+          if(this.gettingElementsService.mustUpdate) {
+            this.updateElements();
+            this.gettingElementsService.mustUpdate=false;
+          }
+      }, 100);
+
   }
 
   openDetails(item: Person){
     this.gettingElementsService.currentPerson = item;
   }
-
-  testFunction($event:any){
-    console.log("work");
-  }
-
-
-
 }

@@ -1,0 +1,9 @@
+<div class="form-inline col-6" >
+    <div class="col-3">
+        <label for="filterString">Filter by name</label>
+    </div>
+    <div class="col-3">
+        <input id="filterString" class="form-control" placeholder="Input name of character" [(ngModel)]="filterString"  (keyup)="onInput()">
+
+    </div>
+</div>

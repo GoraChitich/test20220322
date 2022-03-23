@@ -1,11 +1,8 @@
-<p>list works!</p>
-<div  *ngIf="persons.length">
+<app-filter></app-filter>
+<div  *ngIf="gettingElementsService.filteredPersons.length">
     <a-scene antialias="true" embedded  [style.height]="'400px'" cursor="rayOrigin: mouse" >
-      <ng-container  *ngFor="let item of persons; let i=index">
-
-
-            <a-text [id]="'idtext'+i"   color="#000" font = "https://cdn.aframe.io/fonts/SourceCodePro.fnt"  width="3" (click)="openDetails(item)"></a-text>
-
+      <ng-container  *ngFor="let item of gettingElementsService.filteredPersons; let i=index">
+            <a-text [id]="'idtext'+i"   color="#000" font = "https://cdn.aframe.io/fonts/SourceCodePro.fnt"  width="5" (click)="openDetails(item)"></a-text>
             <a-box  [id]="'idbox'+i"  rotation="0 45 0"  (click)="openDetails(item)"></a-box>
       </ng-container>
     </a-scene>
